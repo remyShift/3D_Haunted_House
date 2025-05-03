@@ -22,6 +22,28 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 
 const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
+const floorColorTexture = textureLoader.load('./floor/textures/forest_leaves_03_diff_1k.jpg')
+const floorARMTexture = textureLoader.load('./floor/textures/forest_leaves_03_arm_1k.jpg')
+const floorNormalTexture = textureLoader.load('./floor/textures/forest_leaves_03_nor_gl_1k.jpg')
+const floorDisplacementTexture = textureLoader.load('./floor/textures/forest_leaves_03_disp_1k.jpg')
+
+
+floorColorTexture.repeat.set(8, 8)
+floorARMTexture.repeat.set(8, 8)
+floorNormalTexture.repeat.set(8, 8)
+floorDisplacementTexture.repeat.set(8, 8)
+
+floorColorTexture.wrapS = THREE.RepeatWrapping
+floorARMTexture.wrapS = THREE.RepeatWrapping
+floorDisplacementTexture.wrapS = THREE.RepeatWrapping
+floorNormalTexture.wrapS = THREE.RepeatWrapping
+
+floorColorTexture.wrapT = THREE.RepeatWrapping
+floorARMTexture.wrapT = THREE.RepeatWrapping
+floorDisplacementTexture.wrapT = THREE.RepeatWrapping
+floorNormalTexture.wrapT = THREE.RepeatWrapping
+
+floorColorTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Objects
@@ -29,10 +51,18 @@ const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
 
 // Floor
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 20),
+    new THREE.PlaneGeometry(20, 20, 100, 100),
     new THREE.MeshStandardMaterial({
         alphaMap: floorAlphaTexture,
-        transparent: true
+        transparent: true,
+        map: floorColorTexture,
+        aoMap: floorARMTexture,
+        roughnessMap: floorARMTexture,
+        metalnessMap: floorARMTexture,
+        normalMap: floorNormalTexture,
+        displacementMap: floorDisplacementTexture,
+        displacementScale: 0.2,
+        displacementBias: -0.1
     })
 )
 
