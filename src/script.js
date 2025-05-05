@@ -106,6 +106,13 @@ const graveNormalTexture = textureLoader.load('./grave/textures/stone_tiles_02_n
 
 graveColorTexture.colorSpace = THREE.SRGBColorSpace
 
+graveColorTexture.repeat.set(0.3, 0.4)
+graveARMTexture.repeat.set(0.3, 0.4)
+graveNormalTexture.repeat.set(0.3, 0.4)
+
+graveColorTexture.wrapS = THREE.RepeatWrapping
+graveARMTexture.wrapS = THREE.RepeatWrapping
+graveNormalTexture.wrapS = THREE.RepeatWrapping
 /**
  * Objects
  */
@@ -215,7 +222,14 @@ bushPositions.forEach(position => {
 // Graves
 
 const graveGeometry = new THREE.BoxGeometry(0.6, 0.8, 0.2)
-const graveMaterial = new THREE.MeshStandardMaterial()
+const graveMaterial = new THREE.MeshStandardMaterial({
+    color: '#c1c1c1',
+    map: graveColorTexture,
+    aoMap: graveARMTexture,
+    roughnessMap: graveARMTexture,
+    metalnessMap: graveARMTexture,
+    normalMap: graveNormalTexture
+})
 
 const graves = new THREE.Group() 
 scene.add(graves)
