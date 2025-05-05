@@ -22,10 +22,10 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 
 const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
-const floorColorTexture = textureLoader.load('./floor/textures/forest_leaves_03_diff_1k.jpg')
-const floorARMTexture = textureLoader.load('./floor/textures/forest_leaves_03_arm_1k.jpg')
-const floorNormalTexture = textureLoader.load('./floor/textures/forest_leaves_03_nor_gl_1k.jpg')
-const floorDisplacementTexture = textureLoader.load('./floor/textures/forest_leaves_03_disp_1k.jpg')
+const floorColorTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_diff_1k.jpg')
+const floorARMTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_arm_1k.jpg')
+const floorNormalTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_nor_1k.jpg')
+const floorDisplacementTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_disp_1k.jpg')
 
 floorColorTexture.repeat.set(8, 8)
 floorARMTexture.repeat.set(8, 8)
@@ -72,11 +72,33 @@ const doorColorTexture = textureLoader.load('./door/color.jpg')
 
 doorColorTexture.colorSpace = THREE.SRGBColorSpace
 
-const roofColorTexture = textureLoader.load('./roof/textures/roof_tile_14_diff_1k.jpg')
-const roofARMTexture = textureLoader.load('./roof/textures/roof_tile_14_arm_1k.jpg')
-const roofNormalTexture = textureLoader.load('./roof/textures/roof_tile_14_nor_1k.jpg')
+const roofColorTexture = textureLoader.load('./roof/textures/roof_slates_02_diff_1k.jpg')
+const roofARMTexture = textureLoader.load('./roof/textures/roof_slates_02_arm_1k.jpg')
+const roofNormalTexture = textureLoader.load('./roof/textures/roof_slates_02_nor_1k.jpg')
 
 roofColorTexture.colorSpace = THREE.SRGBColorSpace
+
+roofColorTexture.repeat.set(3, 1)
+roofARMTexture.repeat.set(3, 1)
+roofNormalTexture.repeat.set(3, 1)
+
+roofColorTexture.wrapS = THREE.RepeatWrapping
+roofARMTexture.wrapS = THREE.RepeatWrapping
+roofNormalTexture.wrapS = THREE.RepeatWrapping
+
+const bushColorTexture = textureLoader.load('./bush/textures/leaves_forest_ground_diff_1k.jpg')
+const bushARMTexture = textureLoader.load('./bush/textures/leaves_forest_ground_arm_1k.jpg')
+const bushNormalTexture = textureLoader.load('./bush/textures/leaves_forest_ground_nor_1k.jpg')
+
+bushColorTexture.colorSpace = THREE.SRGBColorSpace
+
+bushColorTexture.repeat.set(2, 1)
+bushARMTexture.repeat.set(2, 1)
+bushNormalTexture.repeat.set(2, 1)
+
+bushColorTexture.wrapS = THREE.RepeatWrapping
+bushARMTexture.wrapS = THREE.RepeatWrapping
+bushNormalTexture.wrapS = THREE.RepeatWrapping
 
 /**
  * Objects
@@ -126,7 +148,13 @@ house.add(walls)
 
 const roof = new THREE.Mesh(
     new THREE.ConeGeometry(3.5, 1.5, 4),
-    new THREE.MeshStandardMaterial()
+    new THREE.MeshStandardMaterial({
+        map: roofColorTexture,
+        aoMap: roofARMTexture,
+        roughnessMap: roofARMTexture,
+        metalnessMap: roofARMTexture,
+        normalMap: roofNormalTexture
+    })
 )
 
 roof.position.y = 2.5 + 1.5 / 2
@@ -154,7 +182,13 @@ door.position.z = 2 + 0.001
 house.add(door)
 
 const bushGeometry = new THREE.SphereGeometry(1, 16, 16)
-const bushMaterial = new THREE.MeshStandardMaterial()
+const bushMaterial = new THREE.MeshStandardMaterial({
+    map: bushColorTexture,
+    aoMap: bushARMTexture,
+    roughnessMap: bushARMTexture,
+    metalnessMap: bushARMTexture,
+    normalMap: bushNormalTexture
+})
 
 const bushPositions = [
     [-0.8, 0, 2.2], // Gauche de la porte
