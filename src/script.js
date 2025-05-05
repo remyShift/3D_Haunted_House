@@ -176,13 +176,15 @@ roof.rotation.y = Math.PI / 4
 house.add(roof) 
 
 const door = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.2, 2.2),
+    new THREE.PlaneGeometry(2.2, 2.2, 100, 100),
     new THREE.MeshStandardMaterial({
         map: doorColorTexture,
         alphaMap: doorAlphaTexture,
         transparent: true,
         aoMap: doorAmbientOcclusionTexture,
         displacementMap: doorHeightTexture,
+        displacementScale: 0.15,
+        displacementBias: -0.025,
         normalMap: doorNormalTexture,
         metalnessMap: doorMetalnessTexture,
         roughnessMap: doorRoughnessTexture
@@ -190,7 +192,7 @@ const door = new THREE.Mesh(
 )
 
 door.position.y = 1
-door.position.z = 2 + 0.001
+door.position.z = 2 + 0.01
 
 house.add(door)
 
