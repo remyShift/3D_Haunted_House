@@ -27,7 +27,6 @@ const floorARMTexture = textureLoader.load('./floor/textures/forest_leaves_03_ar
 const floorNormalTexture = textureLoader.load('./floor/textures/forest_leaves_03_nor_gl_1k.jpg')
 const floorDisplacementTexture = textureLoader.load('./floor/textures/forest_leaves_03_disp_1k.jpg')
 
-
 floorColorTexture.repeat.set(8, 8)
 floorARMTexture.repeat.set(8, 8)
 floorNormalTexture.repeat.set(8, 8)
@@ -44,6 +43,40 @@ floorDisplacementTexture.wrapT = THREE.RepeatWrapping
 floorNormalTexture.wrapT = THREE.RepeatWrapping
 
 floorColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const wallColorTexture = textureLoader.load('./wall/textures/rock_wall_09_diff_1k.jpg')
+const wallARMTexture = textureLoader.load('./wall/textures/rock_wall_09_arm_1k.jpg')
+const wallNormalTexture = textureLoader.load('./wall/textures/rock_wall_09_nor_1k.jpg')
+
+wallColorTexture.repeat.set(2, 2)
+wallARMTexture.repeat.set(2, 2)
+wallNormalTexture.repeat.set(2, 2)
+
+wallColorTexture.wrapS = THREE.RepeatWrapping
+wallARMTexture.wrapS = THREE.RepeatWrapping
+wallNormalTexture.wrapS = THREE.RepeatWrapping
+
+wallNormalTexture.wrapT = THREE.RepeatWrapping
+wallARMTexture.wrapT = THREE.RepeatWrapping
+wallColorTexture.wrapT = THREE.RepeatWrapping
+
+wallColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const doorAlphaTexture = textureLoader.load('./door/alpha.jpg')
+const doorAmbientOcclusionTexture = textureLoader.load('./door/ambientOcclusion.jpg')
+const doorHeightTexture = textureLoader.load('./door/height.jpg')
+const doorNormalTexture = textureLoader.load('./door/normal.jpg')
+const doorMetalnessTexture = textureLoader.load('./door/metalness.jpg')
+const doorRoughnessTexture = textureLoader.load('./door/roughness.jpg')
+const doorColorTexture = textureLoader.load('./door/color.jpg')
+
+doorColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const roofColorTexture = textureLoader.load('./roof/textures/roof_tile_14_diff_1k.jpg')
+const roofARMTexture = textureLoader.load('./roof/textures/roof_tile_14_arm_1k.jpg')
+const roofNormalTexture = textureLoader.load('./roof/textures/roof_tile_14_nor_1k.jpg')
+
+roofColorTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Objects
@@ -78,8 +111,14 @@ const house = new THREE.Group()
 scene.add(house)
 
 const walls = new THREE.Mesh(
-    new THREE.BoxGeometry(4, 2.5, 4),
-    new THREE.MeshStandardMaterial()
+    new THREE.BoxGeometry(4, 2.5, 4, 100, 100),
+    new THREE.MeshStandardMaterial({
+        map: wallColorTexture,
+        aoMap: wallARMTexture,
+        roughnessMap: wallARMTexture,
+        metalnessMap: wallARMTexture,
+        normalMap: wallNormalTexture
+    })
 )
 
 walls.position.y = 2.5 / 2
@@ -97,7 +136,16 @@ house.add(roof)
 
 const door = new THREE.Mesh(
     new THREE.PlaneGeometry(2.2, 2.2),
-    new THREE.MeshStandardMaterial()
+    new THREE.MeshStandardMaterial({
+        map: doorColorTexture,
+        alphaMap: doorAlphaTexture,
+        transparent: true,
+        aoMap: doorAmbientOcclusionTexture,
+        displacementMap: doorHeightTexture,
+        normalMap: doorNormalTexture,
+        metalnessMap: doorMetalnessTexture,
+        roughnessMap: doorRoughnessTexture
+    })
 )
 
 door.position.y = 1
