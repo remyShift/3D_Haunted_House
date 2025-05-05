@@ -100,6 +100,12 @@ bushColorTexture.wrapS = THREE.RepeatWrapping
 bushARMTexture.wrapS = THREE.RepeatWrapping
 bushNormalTexture.wrapS = THREE.RepeatWrapping
 
+const graveColorTexture = textureLoader.load('./grave/textures/stone_tiles_02_diff_1k.jpg')
+const graveARMTexture = textureLoader.load('./grave/textures/stone_tiles_02_arm_1k.jpg')
+const graveNormalTexture = textureLoader.load('./grave/textures/stone_tiles_02_nor_1k.jpg')
+
+graveColorTexture.colorSpace = THREE.SRGBColorSpace
+
 /**
  * Objects
  */
@@ -183,6 +189,7 @@ house.add(door)
 
 const bushGeometry = new THREE.SphereGeometry(1, 16, 16)
 const bushMaterial = new THREE.MeshStandardMaterial({
+    color: '#ccffcc',
     map: bushColorTexture,
     aoMap: bushARMTexture,
     roughnessMap: bushARMTexture,
@@ -201,6 +208,7 @@ bushPositions.forEach(position => {
     const bush = new THREE.Mesh(bushGeometry, bushMaterial)
     bush.scale.setScalar(Math.random() * 0.3 + 0.2)
     bush.position.set(...position)
+    bush.rotation.x = - 0.75
     house.add(bush)
 })
 
