@@ -275,9 +275,7 @@ scene.add(ambientLight)
 const directionalLight = new THREE.DirectionalLight('#86cdff', 0.6)
 directionalLight.position.set(3, 2, -8)
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
-
-scene.add(directionalLight, directionalLightHelper)
+scene.add(directionalLight)
 
 /**
  * Ghosts Lights
@@ -338,6 +336,41 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(sizes.width, sizes.height)
 
 renderer.render(scene, camera)
+
+/**
+ * Shadows
+ */
+
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFShadowMap
+
+// Cast
+directionalLight.castShadow = true
+ghost1.castShadow = true
+ghost2.castShadow = true
+ghost3.castShadow = true
+walls.castShadow = true
+roof.castShadow = true
+
+// Receive
+walls.receiveShadow = true
+floor.receiveShadow = true
+
+for (const grave of graves.children) {
+    grave.castShadow = true
+    grave.receiveShadow = true
+}
+
+// Maping
+
+directionalLight.shadow.mapSize.width = 256
+directionalLight.shadow.mapSize.height = 256
+directionalLight.shadow.camera.top = 8
+directionalLight.shadow.camera.right = 8
+directionalLight.shadow.camera.bottom = -8
+directionalLight.shadow.camera.left = -8
+directionalLight.shadow.camera.near = 1
+directionalLight.shadow.camera.far = 20
 
 // Timer
 
