@@ -24,7 +24,7 @@ const textureLoader = new THREE.TextureLoader()
 const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
 const floorColorTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_diff_1k.jpg')
 const floorARMTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_arm_1k.jpg')
-const floorNormalTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_nor_1k.jpg')
+const floorNormalTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_nor_gl_1k.jpg')
 const floorDisplacementTexture = textureLoader.load('./floor/textures/brown_mud_leaves_01_disp_1k.jpg')
 
 floorColorTexture.repeat.set(8, 8)
@@ -46,7 +46,7 @@ floorColorTexture.colorSpace = THREE.SRGBColorSpace
 
 const wallColorTexture = textureLoader.load('./wall/textures/rock_wall_09_diff_1k.jpg')
 const wallARMTexture = textureLoader.load('./wall/textures/rock_wall_09_arm_1k.jpg')
-const wallNormalTexture = textureLoader.load('./wall/textures/rock_wall_09_nor_1k.jpg')
+const wallNormalTexture = textureLoader.load('./wall/textures/rock_wall_09_nor_gl_1k.jpg')
 
 wallColorTexture.repeat.set(2, 2)
 wallARMTexture.repeat.set(2, 2)
@@ -184,7 +184,7 @@ const door = new THREE.Mesh(
         aoMap: doorAmbientOcclusionTexture,
         displacementMap: doorHeightTexture,
         displacementScale: 0.15,
-        displacementBias: -0.025,
+        displacementBias: -0.04,
         normalMap: doorNormalTexture,
         metalnessMap: doorMetalnessTexture,
         roughnessMap: doorRoughnessTexture
@@ -220,6 +220,11 @@ bushPositions.forEach(position => {
     bush.rotation.x = - 0.75
     house.add(bush)
 })
+
+const doorLight = new THREE.PointLight('#ff7d46', 1)
+doorLight.position.set(0, 2.2, 2.5)
+
+house.add(doorLight)
 
 // Graves
 
@@ -262,16 +267,28 @@ for(let i = 0; i < 30; i++) {
  */
 
 // Ambient Lights
-const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+const ambientLight = new THREE.AmbientLight('#86cdff', 0.3)
+
+scene.add(ambientLight)
 
 // Directional Light
-const directionalLight = new THREE.DirectionalLight('#ffffff', 2.5)
+const directionalLight = new THREE.DirectionalLight('#86cdff', 0.6)
 directionalLight.position.set(3, 2, -8)
-directionalLight.intensity = 0.3
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 0.2)
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
 
-scene.add(ambientLight, directionalLight)
+scene.add(directionalLight, directionalLightHelper)
+
+/**
+ * Ghosts Lights
+ */
+
+const ghost1 = new THREE.PointLight('#8800ff', 2)
+const ghost2 = new THREE.PointLight('#ff0088', 2)
+const ghost3 = new THREE.PointLight('#ff0000', 2)
+
+scene.add(ghost1, ghost2, ghost3)
+
 
 /**
  * Sizes
@@ -329,12 +346,29 @@ const timer = new Timer();
 // Animation
 
 const tick = () => {
-        // Timer
+    // Timer
     timer.update()
 	const elapsedTime = timer.getElapsed();
 
     // Update controls
     controls.update();
+
+    // Update Ghosts Lights
+    const ghost1Angle = elapsedTime * 0.5
+    ghost1.position.x = Math.sin(ghost1Angle) * 4
+    ghost1.position.z = Math.cos(ghost1Angle) * 4
+    ghost1.position.y = Math.sin(ghost1Angle) * Math.sin(ghost1Angle * 2.34) * Math.sin(ghost1Angle * 3.45)
+    
+    const ghost2Angle = - elapsedTime * 0.38
+    ghost2.position.x = Math.sin(ghost2Angle) * 5
+    ghost2.position.z = Math.cos(ghost2Angle) * 5
+    ghost2.position.y = Math.sin(ghost2Angle) * Math.sin(ghost2Angle * 2.34) * Math.sin(ghost2Angle * 3.45)
+    
+    const ghost3Angle = elapsedTime * 0.23
+    ghost3.position.x = Math.sin(ghost3Angle) * 6
+    ghost3.position.z = Math.cos(ghost3Angle) * 6
+    ghost3.position.y = Math.sin(ghost3Angle) * Math.sin(ghost3Angle * 2.34) * Math.sin(ghost3Angle * 3.45)
+    
 
 	// Render
 	renderer.render(scene, camera);
