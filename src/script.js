@@ -269,12 +269,12 @@ for(let i = 0; i < 30; i++) {
  */
 
 // Ambient Lights
-const ambientLight = new THREE.AmbientLight('#86cdff', 0.3)
+const ambientLight = new THREE.AmbientLight('#86cdff', 0.2)
 
 scene.add(ambientLight)
 
 // Directional Light
-const directionalLight = new THREE.DirectionalLight('#86cdff', 0.6)
+const directionalLight = new THREE.DirectionalLight('#86cdff', 0.5)
 directionalLight.position.set(3, 2, -8)
 
 scene.add(directionalLight)
@@ -438,7 +438,9 @@ const tick = () => {
     ghost3.position.x = Math.sin(ghost3Angle) * 6
     ghost3.position.z = Math.cos(ghost3Angle) * 6
     ghost3.position.y = Math.sin(ghost3Angle) * Math.sin(ghost3Angle * 2.34) * Math.sin(ghost3Angle * 3.45)
-    
+
+    // flicker door light
+    doorLight.intensity = Math.random() + 1
 
 	// Render
 	renderer.render(scene, camera);
